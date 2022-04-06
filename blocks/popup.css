@@ -29,7 +29,7 @@
     justify-content: flex-end;
     align-self: flex-end;
     margin-bottom: 3px;
-    background: url(../images/CloseButton.svg);
+    background: url(../images/CloseButton.svg) no-repeat;
     border: none;
     padding: 0;
     width: 40px;
@@ -76,6 +76,7 @@
         margin-bottom: 13.5px;
         width: 26px;
         height: 26px;
+        background: url(../images/CloseButton2.svg) no-repeat;
     }
     .popup__form-container {
         width: 100%;
