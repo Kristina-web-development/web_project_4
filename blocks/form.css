@@ -55,6 +55,7 @@
     min-height: 50.15px;
     width: 358px;
     transition: opacity 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 .form__button:hover {
@@ -66,7 +67,6 @@
         padding-top: 76px;
         padding-bottom: 25px;
         max-width: 238px;
-        width: 238px;
     }
     .form__input {
         width: 100%;

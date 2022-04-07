@@ -21,9 +21,8 @@
 
 .gallery__card-image {
     display: block;
-    max-width: 282px;
     width: 282px;
-    min-height: 282px;
+    height: 282px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     margin: 0;
@@ -67,10 +66,12 @@
     height: 19px;
     margin-right: 15px;
     transition: opacity 0.1s ease-in-out;
+    cursor: pointer;
+    padding: 0;
 }
 
 .gallery__card-button:hover {
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
 .gallery__card-button_active {
