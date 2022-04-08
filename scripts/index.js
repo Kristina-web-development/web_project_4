@@ -11,7 +11,7 @@ function openPopup() {
     let jobInput = document.getElementById("job");
 
     let profileName = document.querySelector(".profile__name");
-    let profileJob = document.querySelector(".profile__discription");
+    let profileJob = document.querySelector(".profile__description");
 
     nameInput.value = profileName.textContent;
     jobInput.value = profileJob.textContent;
@@ -29,7 +29,7 @@ function handleProfileFormSubmit(evt) {
     let jobInput = document.getElementById("job");
 
     let profileName = document.querySelector(".profile__name");
-    let profileJob = document.querySelector(".profile__discription");
+    let profileJob = document.querySelector(".profile__description");
 
     profileName.textContent = nameInput.value;
     profileJob.textContent = jobInput.value;
