@@ -37,7 +37,7 @@ function handleProfileFormSubmit(evt) {
     popup.classList.remove("popup_active");
 }
 
-profileEditbutton.addEventListener("click", openPopup);
+profileOpenbutton.addEventListener("click", openPopup);
 
 popupClosebutton.addEventListener("click", closePopup);
 
