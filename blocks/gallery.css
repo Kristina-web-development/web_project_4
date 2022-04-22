@@ -29,6 +29,29 @@
     padding-bottom: 0;
 }
 
+.gallery__card-image:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+img.specialPic {
+    object-fit: contain;
+    width: 80%;
+    height: 80%;
+}
+
+.specialBtn {
+    display: flex;
+    position: relative;
+    top: -10px;
+    right: -10px;
+    background: url(../images/CloseButton.svg) no-repeat;
+}
+
+.gallery__card-image.specialPic:hover {
+    opacity: 1;
+}
+
 .gallery__card-container {
     background-color: white;
     display: flex;
