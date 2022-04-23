@@ -29,6 +29,35 @@
     padding-bottom: 0;
 }
 
+.gallery__card-image:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.specialBtn {
+    /* position: absolute; */
+    display: flex;
+    margin-bottom: 3px;
+    background: url(../images/CloseButton.svg) no-repeat;
+    border: none;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+    margin: 0 -40px;
+}
+
+.specialBtn:hover {
+    opacity: 0.6;
+    transform: rotate(45deg);
+}
+
+.specialPic {
+    max-width: 75vw;
+    max-height: 75vh;
+}
+
 .gallery__card-container {
     background-color: white;
     display: flex;
@@ -68,6 +97,23 @@
     transition: opacity 0.1s ease-in-out;
     cursor: pointer;
     padding: 0;
+}
+
+.like {
+    background: url(../images/CardButton_active.svg);
+}
+
+.trashIcon {
+    z-index: 1;
+    transition: 0.3s linear;
+    object-fit: contain;
+    top: 40px;
+    left: 87%;
+    position: relative;
+    height: 19.3px;
+    width: 18px;
+    /* float: right; */
+    background: url(../images/trash-icon.svg);
 }
 
 .gallery__card-button:hover {
