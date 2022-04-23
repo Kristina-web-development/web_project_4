@@ -1,7 +1,3 @@
-//let popup = document.querySelector(".popup");
-//let profileOpenbutton = document.querySelector(".profile__open-button");
-//let popupClosebutton = popup.querySelector(".popup__close-button");
-// popupForm = document.querySelector(".form");
 const buttonArray = []
 
 for (const btn of document.getElementsByTagName("button")) {
@@ -37,44 +33,15 @@ const initialCards = [{
 ];
 
 function newPopup(button_id) {
-    //console.log("Button id is : " + button_id + "\nThen popup id is : " + button_id + "Popup")
     document.getElementById(button_id + "Popup").
     classList.toggle("popup_active");
 }
 
-// function openPopup() {
-//     popup.classList.add("popup_active");
-
-//     let nameInput = document.getElementById("name");
-
-//     let jobInput = document.getElementById("job");
-
-//     let profileName = document.querySelector(".profile__name");
-//     let profileJob = document.querySelector(".profile__description");
-
-//     nameInput.value = profileName.textContent;
-//     jobInput.value = profileJob.textContent;
-// }
 
 function closePopup(e) {
     e.parentElement.parentElement.classList.remove("popup_active");
 }
 
-// function handleProfileFormSubmit(evt) {
-//     evt.preventDefault();
-
-//     let nameInput = document.getElementById("name");
-
-//     let jobInput = document.getElementById("job");
-
-//     let profileName = document.querySelector(".profile__name");
-//     let profileJob = document.querySelector(".profile__description");
-
-//     profileName.textContent = nameInput.value;
-//     profileJob.textContent = jobInput.value;
-
-//     popup.classList.remove("popup_active");
-// }
 
 function addPicture(name, link, remote) {
     console.log(link);
@@ -86,16 +53,31 @@ function addPicture(name, link, remote) {
     _img.alt = name;
     _img.className = "gallery__card-image";
 
+    const trashIcon = document.createElement("button");
+
+    trashIcon.type = "button";
+    trashIcon.className = "gallery__card-button trashIcon";
+    trashIcon.onclick = e => { e.target.parentElement.remove(); };
+
+    _li.appendChild(trashIcon);
+
+
     _img.onclick = () => {
         const _pop = document.getElementById("picPresentation");
-        const _copy_img = _img.cloneNode();
-        //_copy_img.insertAdjacentHTML('beforeend', `<button type="button" class="popup__close-button specialBtn"></button>`)
-        console.log(_copy_img.className);
+        const container = document.getElementById("pictureContainer");
+        const picture_text = document.getElementById("picture_description");
 
+        const _copy_img = _img.cloneNode();
+
+        console.log(_copy_img.className);
+        _copy_img.className = "";
         _copy_img.classList.add("specialPic");
-        _pop.appendChild(_copy_img);
+        console.log(picture_text)
+        container.insertBefore(_copy_img, picture_text);
+        picture_text.innerHTML = name;
         _pop.classList.add("popup_active");
-        const presentation_img = _pop.getElementsByTagName("img");
+
+
     }
 
 
@@ -109,6 +91,7 @@ function addPicture(name, link, remote) {
     const _btn = document.createElement("button");
     _btn.type = "button";
     _btn.className = "gallery__card-button";
+    _btn.onclick = e => e.target.classList.toggle("like");
 
     _div.appendChild(_h2);
     _div.appendChild(_btn)
@@ -116,8 +99,13 @@ function addPicture(name, link, remote) {
     _li.appendChild(_img);
     _li.appendChild(_div);
 
+    const gallery_container = document.querySelector(".gallery__container");
+    if (!remote) {
+        gallery_container.appendChild(_li);
+    } else {
+        gallery_container.insertBefore(_li, gallery_container.firstElementChild);
+    }
 
-    document.querySelector(".gallery__container").appendChild(_li);
 }
 
 for (const pic of initialCards) {
@@ -210,8 +198,8 @@ function generatePopup(popup_name) {
 document.querySelector(".specialBtn").onclick = e => {
     e.preventDefault();
     const container = e.target;
-    container.parentElement.nextElementSibling.remove();
-    container.parentElement.parentElement.classList.remove("popup_active");
+    container.nextElementSibling.remove();
+    document.getElementById("picPresentation").classList.remove("popup_active");
 }
 
 buttonArray.forEach(button => {
