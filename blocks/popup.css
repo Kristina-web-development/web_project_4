@@ -70,13 +70,18 @@
     width: 470px;
 }
 
-.full_screen_size {
+.fullsize {
     display: flex;
     min-width: 100vw;
     min-height: 100vh;
     align-items: center;
     flex-direction: column;
     justify-content: center;
+}
+
+.popup__card-container {
+    display: flex;
+    flex-direction: column;
 }
 
 .popup__close-button {
