@@ -1,10 +1,15 @@
-const buttonArray = []
+const profilePopup = document.getElementById("profilePopup");
+const profilePopupOpenButton = document.querySelector(".profile__open-button");
+const profilePopupCloseButton = profilePopup.querySelector(".popup__close-button");
+const popupForm = profilePopup.querySelector(".form");
 
-for (const btn of document.getElementsByTagName("button")) {
-    if (btn.id || btn.className == 'popup__close-button') {
-        buttonArray.push(btn);
-    }
-}
+const newPlacePopup = document.getElementById("newPlacePopup");
+const newPlacePopupCloseButton = newPlacePopup.querySelector(".popup__close-button");
+const newPlaceForm = newPlacePopup.querySelector("form");
+const newPlaceButton = document.getElementById("newPlaceButton");
+
+const bigPicturePopup = document.getElementById("bigPicturePopup");
+const bigPicturePopupCloseButton = bigPicturePopup.querySelector(".popup__close-button");
 
 const initialCards = [{
         name: "Yosemite Valley",
@@ -32,184 +37,134 @@ const initialCards = [{
     }
 ];
 
-function newPopup(button_id) {
-    document.getElementById(button_id + "Popup").
-    classList.toggle("popup_active");
+function openProfilePopup() {
+    profilePopup.classList.add("popup_active");
+
+    let nameInput = document.getElementById("name");
+
+    let jobInput = document.getElementById("job");
+
+    let profileName = document.querySelector(".profile__name");
+    let profileJob = document.querySelector(".profile__description");
+
+    nameInput.value = profileName.textContent;
+    jobInput.value = profileJob.textContent;
 }
 
+function closeActivePopup(e, forceClose) {
+    let activePopup = document.querySelector(".popup_active");
 
-function closePopup(e) {
-    e.parentElement.parentElement.classList.remove("popup_active");
+    if (forceClose) {
+        activePopup.classList.remove("popup_active");
+        return;
+    }
+    activePopup.classList.add("popup_closing");
+    setTimeout(() => activePopup.classList.remove("popup_active", "popup_closing"), 400);
 }
 
+function handleProfileFormSubmit(evt) {
+    evt.preventDefault();
 
-function addPicture(name, link, remote) {
-    console.log(link);
-    const _li = document.createElement("li")
-    const _img = document.createElement("img")
-    const _id = `${name.toLowerCase() + (Math.random() * 10)}`.replaceAll(" ", "_");
+    let nameInput = document.getElementById("name");
 
-    _img.src = link;
-    _img.alt = name;
-    _img.className = "gallery__card-image";
+    let jobInput = document.getElementById("job");
 
-    const trashIcon = document.createElement("button");
+    let profileName = document.querySelector(".profile__name");
+    let profileJob = document.querySelector(".profile__description");
 
-    trashIcon.type = "button";
-    trashIcon.className = "gallery__card-button trashIcon";
-    trashIcon.onclick = e => { e.target.parentElement.remove(); };
+    profileName.textContent = nameInput.value;
+    profileJob.textContent = jobInput.value;
 
-    _li.appendChild(trashIcon);
-
-
-    _img.onclick = () => {
-        const _pop = document.getElementById("picPresentation");
-        const container = document.getElementById("pictureContainer");
-        const picture_text = document.getElementById("picture_description");
-
-        const _copy_img = _img.cloneNode();
-
-        console.log(_copy_img.className);
-        _copy_img.className = "";
-        _copy_img.classList.add("specialPic");
-        console.log(picture_text)
-        container.insertBefore(_copy_img, picture_text);
-        picture_text.innerHTML = name;
-        _pop.classList.add("popup_active");
-
-
-    }
-
-
-    const _div = document.createElement("div");
-    _div.className = "gallery__card-container";
-
-    const _h2 = document.createElement("h2")
-    _h2.className = "gallery__card-title";
-    _h2.innerHTML = name;
-
-    const _btn = document.createElement("button");
-    _btn.type = "button";
-    _btn.className = "gallery__card-button";
-    _btn.onclick = e => e.target.classList.toggle("like");
-
-    _div.appendChild(_h2);
-    _div.appendChild(_btn)
-
-    _li.appendChild(_img);
-    _li.appendChild(_div);
-
-    const gallery_container = document.querySelector(".gallery__container");
-    if (!remote) {
-        gallery_container.appendChild(_li);
-    } else {
-        gallery_container.insertBefore(_li, gallery_container.firstElementChild);
-    }
-
+    profilePopup.classList.remove("popup_active");
 }
 
-for (const pic of initialCards) {
-    addPicture(pic.name, pic.link, false);
+function deleteGalleryCard(e) {
+    e.target.parentElement.remove();
 }
 
-function generatePopup(popup_name) {
+/**
+ * 
+ * @param {String} title Image title
+ * @param {String} link Link to image
+ * @param {Boolean} first_place Whether to add new picture on first place or not
+ */
+function addCardToGallery(title, link, first_place) {
 
-    const mainContainer = document.querySelector(".main");
-    let popup_title = ""
-    let button_text = ""
-    let first_placeholder = ""
-    let second_placeholder = ""
+    let cardTemplate = document.getElementById("galleryCard");
+    let galleryContainer = document.querySelector(".gallery__container");
 
-    function addStory(e) {
-        e.preventDefault();
+    /** Cloning card template and getting its image and title elements */
+    let newCard = cardTemplate.content.cloneNode(true);
+    let cardImage = newCard.querySelector("img");
+    let cardTitle = newCard.querySelector(".gallery__card-title");
+    let cardLikeButton = newCard.querySelector(".gallery__card-button");
+    let cardDeleteButton = newCard.querySelector(".gallery__delete-card");
 
-        const _form = e.target;
 
-        const title = _form["name"].value;
-        const image_link = _form["myvalue"].value;
+    /** 
+     *  Changing img src attribute to load the picture from the link argument
+     *  Setting text that appears when a user moves mouse pointer over the image, and text under the card picture
+     */
+    cardImage.setAttribute("src", link);
+    cardImage.setAttribute("alt", title);
+    cardTitle.textContent = title;
 
-        addPicture(title, image_link, true);
+    /** Click on image triggers our popup to show up */
+    cardImage.addEventListener("click", handleBigPicturePopup);
+    cardDeleteButton.addEventListener("click", deleteGalleryCard);
+    /** Like button click event */
+    cardLikeButton.addEventListener("click", event => event.target.classList.toggle("liked"));
 
-        document.querySelector(".popup_active").remove();
+    /** Adding our new card to the card gallery  */
+    if (first_place) {
+        galleryContainer.insertBefore(newCard, galleryContainer.firstElementChild);
+        return;
     }
-
-    function editProfileInfo(e) {
-        e.preventDefault();
-
-        const _form = e.target;
-
-        document.querySelector(".profile__name").innerHTML = _form["name"].value;
-        document.querySelector(".profile__description").innerHTML = _form["myvalue"].value;
-
-        document.querySelector(".popup_active").remove();
-    }
-
-    switch (popup_name) {
-        case 'addPicturePopup':
-            popup_title = "New place";
-            button_text = "Create";
-            first_placeholder = "Title";
-            second_placeholder = "Image link";
-            break;
-        case 'editProfilePopup':
-            popup_title = "Edit profile";
-            button_text = "Save";
-            first_placeholder = 'Jacques Cousteau';
-            second_placeholder = "Explorer";
-            break;
-    }
-
-    mainContainer.insertAdjacentHTML("beforeend", `
-    <section id="${popup_name}" class="popup popup_active">
-    <div class="popup__container">
-        <button id="close_${popup_name}" type="button" class="popup__close-button"></button>
-        <div class="popup__form-container">
-            <h2 class="popup__title">${popup_title}</h2>
-            <form id="submit_${popup_name}" class="form popup__form" name="form">
-                <fieldset class="form__fieldset">
-                    <input class="form__input" type="text" id="name" placeholder="${first_placeholder}" name="name" />
-                    <input class="form__input" type="text" id="myvalue" placeholder="${second_placeholder}" name="myvalue" />
-                </fieldset>
-                <fieldset class="form__fieldset-button">
-                    <button type="submit" class="form__button">${button_text}</button>
-                </fieldset>
-            </form>
-        </div>
-    </div>
-    </section>`)
-
-
-
-    const displayed_form = document.getElementById("submit_" + popup_name);
-
-    switch (popup_name) {
-        case 'addPicturePopup':
-            displayed_form.onsubmit = addStory;
-            break;
-        case 'editProfilePopup':
-            displayed_form.onsubmit = editProfileInfo;
-            break;
-    }
-
-    document.getElementById("close_" + popup_name).onclick = () => document.querySelector(".popup_active").remove();
+    galleryContainer.appendChild(newCard);
 }
 
+function openNewPlacePopup() {
+    newPlacePopup.classList.add("popup_active");
+}
 
-document.querySelector(".specialBtn").onclick = e => {
+function newPlaceFormSubmit(e) {
     e.preventDefault();
-    const container = e.target;
-    container.nextElementSibling.remove();
-    document.getElementById("picPresentation").classList.remove("popup_active");
+
+    let newCardTitle = newPlaceForm.cardTitle.value;
+    let newCardLink = newPlaceForm.cardLink.value;
+
+    addCardToGallery(newCardTitle, newCardLink, true);
+
+    newPlacePopup.classList.remove("popup_active");
+
 }
 
-buttonArray.forEach(button => {
-    let single_button = document.getElementById(button.id);
+function handleBigPicturePopup(e) {
 
-    if (single_button) {
-        single_button.addEventListener("click", () => generatePopup(single_button.id + "Popup", 'Finish'));
-    }
+    let clickedPicture = e.target;
+    let clickedPictureSrc = clickedPicture.getAttribute("src");
+    let clickedPictureTitle = clickedPicture.getAttribute("alt");
 
-    if (button.className == 'popup__close-button') {
-        button.addEventListener("click", e => e.target.parentElement.parentElement.classList.remove("popup_active"))
-    }
-});
+    let bigPictureImage = bigPicturePopup.querySelector("img");
+    let pictureContainer = bigPicturePopup.querySelector("img");
+    pictureContainer.setAttribute("src", clickedPictureSrc);
+
+    let bigPicturePopupText = bigPicturePopup.querySelector("p");
+    bigPicturePopupText.textContent = clickedPictureTitle;
+
+    bigPicturePopup.classList.add("popup_active");
+}
+
+profilePopupOpenButton.addEventListener("click", openProfilePopup);
+profilePopupCloseButton.addEventListener("click", closeActivePopup);
+popupForm.addEventListener("submit", handleProfileFormSubmit);
+
+newPlaceButton.addEventListener("click", openNewPlacePopup);
+newPlacePopupCloseButton.addEventListener("click", closeActivePopup);
+newPlaceForm.addEventListener("submit", newPlaceFormSubmit);
+
+bigPicturePopupCloseButton.addEventListener("click", closeActivePopup);
+
+for (let card of initialCards) {
+    addCardToGallery(card.name, card.link);
+}

@@ -7,10 +7,6 @@
     color: #ffffff;
 }
 
-.page.cool {
-    background: rgba(155, 155, 155, 0.5);
-}
-
 .page__container {
     max-width: 1280px;
     margin: 0 auto;
