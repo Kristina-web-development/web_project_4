@@ -1,4 +1,3 @@
-const popup = document.querySelector(".popup");
 const profilePopup = document.getElementById("profilePopup");
 const profilePopupOpenButton = document.querySelector(".profile__open-button");
 const profilePopupCloseButton = profilePopup.querySelector(
@@ -46,7 +45,7 @@ const initialCards = [{
     },
 ];
 
-function getInputValues() {
+function setProfileFormValues() {
     const nameInput = document.getElementById("name");
     const jobInput = document.getElementById("job");
     nameInput.value = profileName.textContent;
@@ -63,7 +62,7 @@ function closePopup(popup) {
 
 function openProfilePopup() {
     openPopup(profilePopup);
-    getInputValues();
+    setProfileFormValues();
 }
 
 function closeProfilePopup() {
@@ -144,7 +143,7 @@ function handleBigPicturePopup(e) {
 
     const pictureContainer = bigPicturePopup.querySelector("img");
     pictureContainer.setAttribute("src", clickedPictureSrc);
-
+    pictureContainer.setAttribute("alt", clickedPictureTitle);
     const bigPicturePopupText = bigPicturePopup.querySelector("p");
     bigPicturePopupText.textContent = clickedPictureTitle;
 
