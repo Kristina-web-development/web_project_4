@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 
 <head>
     <meta charset="UTF-8" />
@@ -31,13 +31,15 @@
                     <button type="button" class="popup__close-button"></button>
                     <div class="popup__form-container">
                         <h2 class="popup__title">Edit profile</h2>
-                        <form class="form popup__form" name="form">
+                        <form class="form popup__form" name="form" novalidate>
                             <fieldset class="form__fieldset">
-                                <input class="form__input" type="text" id="name" placeholder="Jacques Cousteau" name="name" />
-                                <input class="form__input" type="text" id="job" placeholder="Explorer" name="job" />
+                                <input class="form__input popup__input" type="text" id="name" placeholder="Jacques Cousteau" name="name" minlength="2" maxlength="40" required />
+                                <span class="name__error popup__input-error">Please fill out this field.></span>
+                                <input class="form__input popup__input" type="text" id="job" placeholder="Explorer" name="job" minlength="2" maxlength="200" required />
+                                <span class="job__error popup__input-error">Please fill out this field.></span>
                             </fieldset>
                             <fieldset class="form__fieldset-button">
-                                <button type="submit" class="form__button">Save</button>
+                                <button type="submit" class="form__button popup__button">Save</button>
                             </fieldset>
                         </form>
                     </div>
@@ -48,13 +50,15 @@
                     <button type="button" class="popup__close-button"></button>
                     <div class="popup__form-container">
                         <h2 class="popup__title">New place</h2>
-                        <form id="newPlacePopupForm" class="form popup__form" name="form">
+                        <form id="newPlacePopupForm" class="form popup__form" name="form" novalidate>
                             <fieldset class="form__fieldset">
-                                <input class="form__input" type="text" id="cardTitle" placeholder="Title" name="cardTitle" />
-                                <input class="form__input" type="text" id="cardLink" placeholder="Image link" name="cardLink" />
+                                <input class="form__input popup__input" type="text" id="cardTitle" placeholder="Title" name="cardTitle" minlength="1" maxlength="30" required />
+                                <span class="cardTitle__error popup__input-error">Please fill out this field.</span>
+                                <input class="form__input popup__input" type="url" id="cardLink" placeholder="Image link" name="cardLink" required/>
+                                <span class="cardLink__error popup__input-error">Please enter a web address.</span>
                             </fieldset>
                             <fieldset class="form__fieldset-button">
-                                <button type="submit" class="form__button">Create</button>
+                                <button type="submit" class="form__button popup__button">Create</button>
                             </fieldset>
                         </form>
                     </div>
