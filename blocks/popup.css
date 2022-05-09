@@ -108,18 +108,6 @@
     padding-left: 36px;
 }
 
-.popup__button_disabled {}
-
-.popup__input_type_error {
-    border-bottom: 1px red;
-}
-
-.popup__input-error_active {
-    color: red;
-}
-
-.popup__error_visible {}
-
 @media screen and (max-width: 600px) {
     .popup {
         max-width: 282px;
