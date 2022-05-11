@@ -31,7 +31,7 @@
                     <button type="button" class="popup__close-button"></button>
                     <div class="popup__form-container">
                         <h2 class="popup__title">Edit profile</h2>
-                        <form class="form popup__form" name="form" novalidate>
+                        <form class="form popup__form" name="profileForm" novalidate>
                             <fieldset class="form__fieldset">
                                 <input class="form__input" type="text" id="name" placeholder="Jacques Cousteau" name="name" required minlength="2" maxlength="40" />
                                 <span class="name-error form__input-error">Please fill out this field.</span>
@@ -39,7 +39,7 @@
                                 <span class="job-error form__input-error">Please fill out this field.</span>
                             </fieldset>
                             <fieldset class="form__fieldset-button">
-                                <button type="submit" class="form__button">Save</button>
+                                <button type="submit" class="form__button" disabled>Save</button>
                             </fieldset>
                         </form>
                     </div>
@@ -50,7 +50,7 @@
                     <button type="button" class="popup__close-button"></button>
                     <div class="popup__form-container">
                         <h2 class="popup__title">New place</h2>
-                        <form id="newPlacePopupForm" class="form popup__form" name="form" novalidate>
+                        <form id="newPlacePopupForm" class="form popup__form" name="newPlaceForm" novalidate>
                             <fieldset class="form__fieldset">
                                 <input class="form__input" type="text" id="cardTitle" placeholder="Title" name="cardTitle" minlength="1" maxlength="30" required />
                                 <span class="cardTitle-error form__input-error">Please fill out this field.</span>
@@ -92,6 +92,7 @@
         </footer>
     </div>
     <script src="./scripts/index.js"></script>
+    <script src="./scripts/validation.js"></script>
 
 </body>
 

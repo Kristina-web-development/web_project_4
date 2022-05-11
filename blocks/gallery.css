@@ -92,16 +92,12 @@
     cursor: pointer;
 }
 
-.gallery__card-button.liked {
-    background: url(../images/CardButton_active.svg);
-}
-
 .gallery__card-button:hover {
     opacity: 0.5;
 }
 
 .gallery__card-button_active {
-    background-color: black;
+    background: url(../images/CardButton_active.svg);
 }
 
 @media screen and (max-width: 970px) {
