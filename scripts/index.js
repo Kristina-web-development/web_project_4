@@ -79,6 +79,7 @@ function openProfilePopup() {
 
 function closeProfilePopup() {
     closePopup(profilePopup);
+    profilePopup.removeEventListener("click", clickClosePopup)
 }
 
 function openNewPlacePopup() {
@@ -87,6 +88,7 @@ function openNewPlacePopup() {
 
 function closeNewPlacePopup() {
     closePopup(newPlacePopup);
+    newPlacePopup.removeEventListener("click", clickClosePopup)
 }
 
 function openBigPicturePopup() {
@@ -95,6 +97,7 @@ function openBigPicturePopup() {
 
 function closeBigPicturePopup() {
     closePopup(bigPicturePopup);
+    bigPicturePopup.removeEventListener("click", clickClosePopup)
 }
 
 function closeByEscape(evt) {
@@ -104,7 +107,8 @@ function closeByEscape(evt) {
     }
 }
 
-document.addEventListener("click", function(evt) {
+
+function clickClosePopup(evt) {
     if (evt.target === profilePopup) {
         closePopup(profilePopup);
     }
@@ -114,7 +118,8 @@ document.addEventListener("click", function(evt) {
     if (evt.target === bigPicturePopup) {
         closePopup(bigPicturePopup);
     }
-});
+}
+
 
 function handleProfileFormSubmit(evt) {
     evt.preventDefault();
@@ -188,6 +193,10 @@ newPlacePopupCloseButton.addEventListener("click", closeNewPlacePopup);
 newPlaceForm.addEventListener("submit", handleNewPlaceFormSubmit);
 
 bigPicturePopupCloseButton.addEventListener("click", closeBigPicturePopup);
+
+newPlacePopup.addEventListener("click", clickClosePopup);
+profilePopup.addEventListener("click", clickClosePopup);
+bigPicturePopup.addEventListener("click", clickClosePopup);
 
 for (const card of initialCards.reverse()) {
     addCardToGallery(card.name, card.link);
