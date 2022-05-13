@@ -79,7 +79,7 @@ function openProfilePopup() {
 
 function closeProfilePopup() {
     closePopup(profilePopup);
-    profilePopup.removeEventListener("click", clickClosePopup)
+    document.removeEventListener("click", clickClosePopup)
 }
 
 function openNewPlacePopup() {
@@ -88,7 +88,7 @@ function openNewPlacePopup() {
 
 function closeNewPlacePopup() {
     closePopup(newPlacePopup);
-    newPlacePopup.removeEventListener("click", clickClosePopup)
+    document.removeEventListener("click", clickClosePopup)
 }
 
 function openBigPicturePopup() {
@@ -97,7 +97,7 @@ function openBigPicturePopup() {
 
 function closeBigPicturePopup() {
     closePopup(bigPicturePopup);
-    bigPicturePopup.removeEventListener("click", clickClosePopup)
+    document.removeEventListener("click", clickClosePopup)
 }
 
 function closeByEscape(evt) {
