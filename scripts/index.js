@@ -77,56 +77,34 @@ function openProfilePopup() {
     setProfileFormValues();
 }
 
-function closeProfilePopup() {
-    closePopup(profilePopup);
-    document.removeEventListener("click", clickClosePopup)
-}
-
 function openNewPlacePopup() {
     openPopup(newPlacePopup);
-}
-
-function closeNewPlacePopup() {
-    closePopup(newPlacePopup);
-    document.removeEventListener("click", clickClosePopup)
 }
 
 function openBigPicturePopup() {
     openPopup(bigPicturePopup);
 }
 
-function closeBigPicturePopup() {
-    closePopup(bigPicturePopup);
-    document.removeEventListener("click", clickClosePopup)
-}
-
 function closeByEscape(evt) {
     if (evt.key === "Escape") {
         const openedPopup = document.querySelector(".popup_active");
-        openedPopup.classList.remove("popup_active");
+        if (openedPopup) {
+            closePopup(openedPopup);
+        }
     }
 }
-
 
 function clickClosePopup(evt) {
-    if (evt.target === profilePopup) {
-        closePopup(profilePopup);
-    }
-    if (evt.target === newPlacePopup) {
-        closePopup(newPlacePopup);
-    }
-    if (evt.target === bigPicturePopup) {
-        closePopup(bigPicturePopup);
+    if (evt.target.classList.contains("popup")) {
+        closePopup(evt.target);
     }
 }
-
 
 function handleProfileFormSubmit(evt) {
     evt.preventDefault();
     profileName.textContent = nameInput.value;
     profileJob.textContent = jobInput.value;
-    profilePopupForm.reset();
-    closeProfilePopup();
+    profilePopup.closest(".popup").classList.remove("popup_active");
     profilePopupSubmitButton.setAttribute("disabled", true);
     profilePopupSubmitButton.classList.add("form__button_disabled");
 }
@@ -165,7 +143,7 @@ function handleNewPlaceFormSubmit(e) {
     const newCardLink = newPlaceForm.cardLink.value;
 
     addCardToGallery(newCardTitle, newCardLink);
-    closeNewPlacePopup();
+    newPlaceForm.closest(".popup").classList.remove("popup_active");
     newPlaceForm.reset();
     newPlaceSubmitButton.setAttribute("disabled", true);
     newPlaceSubmitButton.classList.add("form__button_disabled");
@@ -185,14 +163,12 @@ function handleBigPicturePopup(e) {
 }
 
 profilePopupOpenButton.addEventListener("click", openProfilePopup);
-profilePopupCloseButton.addEventListener("click", closeProfilePopup);
+
 profilePopupForm.addEventListener("submit", handleProfileFormSubmit);
 
 newPlaceButton.addEventListener("click", openNewPlacePopup);
-newPlacePopupCloseButton.addEventListener("click", closeNewPlacePopup);
-newPlaceForm.addEventListener("submit", handleNewPlaceFormSubmit);
 
-bigPicturePopupCloseButton.addEventListener("click", closeBigPicturePopup);
+newPlaceForm.addEventListener("submit", handleNewPlaceFormSubmit);
 
 newPlacePopup.addEventListener("click", clickClosePopup);
 profilePopup.addEventListener("click", clickClosePopup);
@@ -201,3 +177,11 @@ bigPicturePopup.addEventListener("click", clickClosePopup);
 for (const card of initialCards.reverse()) {
     addCardToGallery(card.name, card.link);
 }
+
+const closeButtons = document.querySelectorAll(".popup__close-button");
+
+closeButtons.forEach((button) => {
+    const popup = button.closest(".popup");
+
+    button.addEventListener("click", () => closePopup(popup));
+});
