@@ -57,6 +57,11 @@ const initialCards = [{
     },
 ];
 
+function disableButton(button) {
+    button.setAttribute("disabled", true);
+    button.classList.add("form__button_disabled");
+}
+
 function setProfileFormValues() {
     nameInput.value = profileName.textContent;
     jobInput.value = profileJob.textContent;
@@ -104,9 +109,9 @@ function handleProfileFormSubmit(evt) {
     evt.preventDefault();
     profileName.textContent = nameInput.value;
     profileJob.textContent = jobInput.value;
-    profilePopup.closest(".popup").classList.remove("popup_active");
-    profilePopupSubmitButton.setAttribute("disabled", true);
-    profilePopupSubmitButton.classList.add("form__button_disabled");
+
+    disableButton(profilePopupSubmitButton);
+    closePopup(profilePopup);
 }
 
 function deleteGalleryCard(e) {
@@ -138,15 +143,13 @@ function addCardToGallery(name, link) {
 
 function handleNewPlaceFormSubmit(e) {
     e.preventDefault();
-
     const newCardTitle = newPlaceForm.cardTitle.value;
     const newCardLink = newPlaceForm.cardLink.value;
 
     addCardToGallery(newCardTitle, newCardLink);
-    newPlaceForm.closest(".popup").classList.remove("popup_active");
     newPlaceForm.reset();
-    newPlaceSubmitButton.setAttribute("disabled", true);
-    newPlaceSubmitButton.classList.add("form__button_disabled");
+    disableButton(newPlaceSubmitButton);
+    closePopup(newPlacePopup);
 }
 
 function handleBigPicturePopup(e) {
@@ -163,11 +166,9 @@ function handleBigPicturePopup(e) {
 }
 
 profilePopupOpenButton.addEventListener("click", openProfilePopup);
-
 profilePopupForm.addEventListener("submit", handleProfileFormSubmit);
 
 newPlaceButton.addEventListener("click", openNewPlacePopup);
-
 newPlaceForm.addEventListener("submit", handleNewPlaceFormSubmit);
 
 newPlacePopup.addEventListener("click", clickClosePopup);
