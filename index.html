@@ -54,7 +54,7 @@
                             <fieldset class="form__fieldset">
                                 <input class="form__input" type="text" id="cardTitle" placeholder="Title" name="cardTitle" minlength="1" maxlength="30" required />
                                 <span class="cardTitle-error form__input-error">Please fill out this field.</span>
-                                <input class="form__input" type="url" id="cardLink" placeholder="Image link" name="cardLink" required/>
+                                <input class="form__input" type="url" id="cardLink" placeholder="Image link" name="cardLink" required />
                                 <span class="cardLink-error form__input-error">Please enter a web address.</span>
                             </fieldset>
                             <fieldset class="form__fieldset-button">
@@ -76,23 +76,27 @@
             <section class="gallery">
                 <ul class="gallery__container"></ul>
             </section>
-            <template id="galleryCard">
-          <li class="gallery__card">
-            <img class="gallery__card-image" />
-            <div class="gallery__card-container">
-              <h2 class="gallery__card-title">Card Title</h2>
-              <button type="button" class="gallery__card-button"></button>
-            </div>
-            <button type="button" class="gallery__delete-card"></button>
-          </li>
-        </template>
+
         </main>
         <footer class="footer">
             <p class="footer__copyright">@Kristina Stasevich 2022</p>
         </footer>
     </div>
-    <script src="./scripts/index.js"></script>
-    <script src="./scripts/validation.js"></script>
+    <template id="galleryCard">
+        <li class="gallery__card">
+            <img class="gallery__card-image" />
+            <div class="gallery__card-container">
+                <h2 class="gallery__card-title">Card Title</h2>
+                <button type="button" class="gallery__card-button"></button>
+            </div>
+            <button type="button" class="gallery__delete-card"></button>
+        </li>
+    </template>
+    <script type="module" src="./scripts/index.js"></script>
+    <script type="module" src="./scripts/FormValidator.js"></script>
+    <script type="module" src="./scripts/utils.js"></script>
+    <script type="module" src="./scripts/Card.js"></script>
+
 
 </body>
 
