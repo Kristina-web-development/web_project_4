@@ -1,11 +1,14 @@
 import {
     closePopup,
-    disableButton,
     clickClosePopup,
     openNewPlacePopup,
     openProfilePopup,
+    handleProfileFormSubmit,
+    handleNewPlaceFormSubmit,
+    addCardToGallery,
+    initialCards,
 } from "./utils.js";
-import { Card, initialCards } from "./Card.js";
+import { Card } from "./Card.js";
 import { FormValidator } from "./FormValidator.js";
 
 (function() {
@@ -18,11 +21,7 @@ import { FormValidator } from "./FormValidator.js";
         errorClass: "form__input-error_visible",
     };
 
-    const nameInput = document.getElementById("name");
-    const jobInput = document.getElementById("job");
-
-    const galleryContainer = document.querySelector(".gallery__container");
-    const activeValidators = [];
+    const galleryCardTemplateSelector = "#galleryCard";
 
     const bigPicturePopup = document.getElementById("bigPicturePopup");
 
@@ -42,47 +41,28 @@ import { FormValidator } from "./FormValidator.js";
     const newPlaceSubmitButton = document.querySelector(
         "form[id=newPlacePopupForm] button"
     );
-
     const profileName = document.querySelector(".profile__name");
     const profileJob = document.querySelector(".profile__description");
 
-    function addCardToGallery(cardElement) {
-        galleryContainer.prepend(cardElement);
-    }
-
-    function setProfileFormValues() {
-        nameInput.value = profileName.textContent;
-        jobInput.value = profileJob.textContent;
-    }
-
-    function handleProfileFormSubmit(evt) {
-        evt.preventDefault();
-        profileName.textContent = nameInput.value;
-        profileJob.textContent = jobInput.value;
-
-        disableButton(profilePopupSubmitButton);
-        closePopup(profilePopup);
-    }
-
-    function handleNewPlaceFormSubmit(e) {
-        e.preventDefault();
-        const newCardTitle = newPlaceForm.cardTitle.value;
-        const newCardLink = newPlaceForm.cardLink.value;
-
-        const newCard = new Card({ name: newCardTitle, link: newCardLink },
-            "#galleryCard"
-        ).generateCard();
-        addCardToGallery(newCard);
-        newPlaceForm.reset();
-        disableButton(newPlaceSubmitButton);
-        closePopup(newPlacePopup);
-    }
-
     profilePopupOpenButton.addEventListener("click", openProfilePopup);
-    profilePopupForm.addEventListener("submit", handleProfileFormSubmit);
+    profilePopupForm.addEventListener("submit", () =>
+        handleProfileFormSubmit(
+            profileName,
+            profileJob,
+            profilePopup,
+            profilePopupSubmitButton
+        )
+    );
 
     newPlaceButton.addEventListener("click", openNewPlacePopup);
-    newPlaceForm.addEventListener("submit", handleNewPlaceFormSubmit);
+    newPlaceForm.addEventListener("submit", () =>
+        handleNewPlaceFormSubmit(
+            newPlacePopup,
+            newPlaceSubmitButton,
+            newPlaceForm,
+            galleryCardTemplateSelector
+        )
+    );
 
     newPlacePopup.addEventListener("click", clickClosePopup);
     profilePopup.addEventListener("click", clickClosePopup);
@@ -90,15 +70,13 @@ import { FormValidator } from "./FormValidator.js";
 
     for (const card of initialCards.reverse()) {
         const _newCard = new Card({ name: card.name, link: card.link },
-            "#galleryCard"
+            galleryCardTemplateSelector
         ).generateCard();
         addCardToGallery(_newCard);
     }
 
     for (const formElement of[newPlaceForm, profilePopupForm]) {
-        activeValidators.push(
-            new FormValidator(configurations, formElement).enableValidation()
-        );
+        new FormValidator(configurations, formElement).enableValidation();
     }
 
     const closeButtons = document.querySelectorAll(".popup__close-button");
