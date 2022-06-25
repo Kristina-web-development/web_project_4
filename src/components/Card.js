@@ -1,49 +1,43 @@
-import { PopupWithImage } from "./PopupWithImage";
-
 class Card {
-    constructor(data, cardSelector, handleCardClick) { //handleCardClick) {
+    constructor(data, cardSelector, handleCardClick) {
         this._cardTitle = data.name;
         this._cardLink = data.link;
         this._cardSelector = cardSelector;
         this._handleCardClick = handleCardClick;
+        this._cardElement = this._getTemplate();
+        this._cardImage = this._cardElement.querySelector(".gallery__card-image");
+        this._cardLikeButton = this._cardElement.querySelector(
+            ".gallery__card-button"
+        );
+        this._cardDeleteButton = this._cardElement.querySelector(
+            ".gallery__delete-card"
+        );
     }
 
     _deleteGalleryCard(e) {
-        e.target.closest(".gallery__card").remove(); //this._element.remove() this._element = null 
+        e.target.closest(".gallery__card").remove();
     }
 
-    _handleImageClick(cardImage) {
-            cardImage.addEventListener("click", () => new PopupWithImage("#bigPicturePopup").open(this._cardLink, this._cardTitle));
-        } //this._element
+    _handleImageClick() {
+        this._cardImage.addEventListener("click", () => {
+            this._handleCardClick(this._cardLink, this._cardTitle);
+        });
+    }
 
-    _handleCardDeleteButton(cardDeleteButton) {
-            cardDeleteButton.addEventListener("click", this._deleteGalleryCard);
-        } //this._element
+    _handleCardDeleteButton() {
+        this._cardDeleteButton.addEventListener("click", this._deleteGalleryCard);
+    }
 
-    _handleCardLikeButton(cardLikeButton) {
-            cardLikeButton.addEventListener("click", (event) => {
-                event.target.classList.toggle("gallery__card-button_active");
-            });
-        } //this._element.querySelector('.card__like-button').classList.toggle('.gallery__card-button_active');
+    _handleCardLikeButton() {
+        this._cardLikeButton.addEventListener("click", (event) => {
+            event.target.classList.toggle("gallery__card-button_active");
+        });
+    }
 
-    _setEventListeners(cardElement) {
-        const cardImage = cardElement.querySelector(".gallery__card-image");
-        const cardLikeButton = cardElement.querySelector(".gallery__card-button");
-        const cardDeleteButton = cardElement.querySelector(".gallery__delete-card");
-
-        this._handleImageClick(cardImage);
-        this._handleCardDeleteButton(cardDeleteButton);
-        this._handleCardLikeButton(cardLikeButton);
-
-        // this._element.querySelector('.gallery__card-image')
-        // .addEventListener('click', () => this._handleImageClick());
-
-        // this._element.querySelector('.gallery__card-button')
-        // .addEventListener('click', () => this._handleCardLikeButton());
-
-        // this._element.querySelector('.gallery__delete-card')
-        // .addEventListener('click', () => this._handleCardDeleteButton());
-
+    _setEventListeners() {
+        this._handleImageClick();
+        this._handleCardDeleteButton();
+        this._handleCardLikeButton();
     }
 
     _getTemplate() {
@@ -55,27 +49,13 @@ class Card {
     }
 
     generateCard() {
-        const newCard = this._getTemplate();
-        const cardImage = newCard.querySelector(".gallery__card-image");
-        const cardTitle = newCard.querySelector(".gallery__card-title");
+        this._cardImage.setAttribute("src", this._cardLink);
+        this._cardImage.setAttribute("alt", this._cardTitle);
 
-        cardImage.setAttribute("src", this._cardLink);
-        cardImage.setAttribute("alt", this._cardTitle);
-        cardTitle.textContent = this._cardTitle;
+        this._setEventListeners();
 
-        this._setEventListeners(newCard);
-
-        return newCard;
+        return this._cardElement;
     }
 }
 
 export { Card };
-
-// index.js 
-
-// const renderCard = (data, wrap) => {
-//     const card = new Card(data, cardSelector, () => {
-//         imageModal.open(data.link, data.name)
-//     });
-//     wrap.prepend(card.getView());
-// };

@@ -6,7 +6,6 @@ class Section {
     }
 
     renderItems() {
-
         this._items.forEach((data) => {
             this._renderer(data);
         });
@@ -15,7 +14,6 @@ class Section {
     addItem(element) {
         this._container.prepend(element);
     }
-
 }
 
 export default Section;

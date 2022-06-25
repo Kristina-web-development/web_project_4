@@ -5,114 +5,85 @@ import Section from "../components/Section.js";
 
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
-
+import { FormValidator } from "../components/FormValidator";
 import { PopupWithImage } from "../components/PopupWithImage";
+import {
+    initialCards,
+    configurations,
+    newPlaceButton,
+    profilePopupOpenButton,
+    galleryCardTemplateSelector,
+    cardsWrap,
+    allForms,
+} from "../utils/constants.js";
 
-const initialCards = [{
-        name: "Yosemite Valley",
-        link: "https://code.s3.yandex.net/web-code/yosemite.jpg",
-    },
-    {
-        name: "Lake Louise",
-        link: "https://code.s3.yandex.net/web-code/lake-louise.jpg",
-    },
-    {
-        name: "Bald Mountains",
-        link: "https://code.s3.yandex.net/web-code/bald-mountains.jpg",
-    },
-    {
-        name: "Latemar",
-        link: "https://code.s3.yandex.net/web-code/latemar.jpg",
-    },
-    {
-        name: "Vanoise National Park",
-        link: "https://code.s3.yandex.net/web-code/vanoise.jpg",
-    },
-    {
-        name: "Lago di Braies",
-        link: "https://code.s3.yandex.net/web-code/lago.jpg",
-    },
-];
+const createCard = (cardData) => {
+    const _card = new Card(
+        cardData,
+        galleryCardTemplateSelector,
+        (link, name) => {
+            bigPicturePopup.open(link, name);
+        }
+    );
+    return _card;
+};
 
-(function() {
-    const configurations = {
-        formSelector: ".form",
-        inputSelector: ".form__input",
-        submitButtonSelector: ".form__button",
-        inactiveButtonClass: "form__button_disabled",
-        inputErrorClass: "form__input_type_error",
-        errorClass: "form__input-error_visible",
-    };
+const userInfo = new UserInfo({
+        userNameSelector: ".profile__name",
+        userJobSelector: ".profile__description",
+    },
+    ".profile__info"
+);
 
-    const userInfo = new UserInfo({
-            userNameSelector: ".profile__name",
-            userJobSelector: ".profile__description",
+const handleNewPlaceFormSubmit = (data) => {
+    renderCard({
+            name: data["cardTitle"],
+            link: data["cardLink"],
         },
-        ".profile__info"
+        cardsWrap
     );
+    newPlacePopup.close();
+};
 
-    const profilePopupOpenButton = document.querySelector(
-        ".profile__open-button"
-    );
-    const galleryCardTemplateSelector = "#galleryCard";
+const handleProfileFormSubmit = (data) => {
+    userInfo.setUserInfo(data.name, data.job);
+    profilePopup.close();
+};
 
-    const cardsWrap = document.querySelector(".gallery__container");
+const newPlacePopup = new PopupWithForm(
+    "#newPlacePopup",
+    handleNewPlaceFormSubmit,
+    configurations
+);
+const profilePopup = new PopupWithForm(
+    "#profilePopup",
+    handleProfileFormSubmit,
+    configurations
+);
+const bigPicturePopup = new PopupWithImage("#bigPicturePopup");
 
-    const handleNewPlaceFormSubmit = (data) => {
-        renderCard({
-                name: data["cardTitle"],
-                link: data["cardLink"],
-            },
-            cardsWrap
-        );
-        newPlacePopup.close();
-    };
+bigPicturePopup.setEventListeners();
+newPlacePopup.setEventListeners();
+profilePopup.setEventListeners();
 
-    const handleProfileFormSubmit = (data) => {
-        const nameInput = document.getElementById("name");
-        const jobInput = document.getElementById("job");
+newPlaceButton.addEventListener("click", () => newPlacePopup.open());
+profilePopupOpenButton.addEventListener("click", () => profilePopup.open());
 
-        userInfo.setUserInfo(nameInput.value, jobInput.value);
-        profilePopup.close();
-    };
+const renderCard = (cardData) => {
+    const card = createCard(cardData);
 
-    const newPlacePopup = new PopupWithForm(
-        "#newPlacePopup",
-        handleNewPlaceFormSubmit,
-        configurations
-    );
-    const profilePopup = new PopupWithForm(
-        "#profilePopup",
-        handleProfileFormSubmit,
-        configurations
-    );
-    const bigPicturePopup = new PopupWithImage("#bigPicturePopup");
+    section.addItem(card.generateCard());
+};
 
-    bigPicturePopup.setEventListeners();
-    newPlacePopup.setEventListeners();
-    profilePopup.setEventListeners();
+const section = new Section({
+        items: initialCards,
+        renderer: renderCard,
+    },
+    ".gallery__container"
+);
 
-    newPlaceButton.addEventListener("click", () => newPlacePopup.open());
-    profilePopupOpenButton.addEventListener("click", () => profilePopup.open());
+section.renderItems();
 
-    const renderCard = (cardData) => {
-        const card = new Card(
-            cardData,
-            galleryCardTemplateSelector,
-            (name, link) => {
-                bigPicturePopup.open(name, link);
-            }
-        );
-
-        section.addItem(card.generateCard());
-    };
-
-    const section = new Section({
-            items: initialCards,
-            renderer: renderCard,
-        },
-        ".gallery__container"
-    );
-
-    section.renderItems();
-})();
+allForms.forEach((form) => {
+    new FormValidator(configurations, form).enableValidation();
+});
