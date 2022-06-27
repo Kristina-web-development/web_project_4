@@ -51,6 +51,8 @@ class Card {
     generateCard() {
         this._cardImage.setAttribute("src", this._cardLink);
         this._cardImage.setAttribute("alt", this._cardTitle);
+        this._cardElement.querySelector(".gallery__card-title").textContent =
+            this._cardTitle;
 
         this._setEventListeners();
 

@@ -33,13 +33,17 @@ export const configurations = {
     errorClass: "form__input-error_visible",
 };
 
+export const profilePopupForm = profilePopup.querySelector(".form");
+export const newPlaceForm = newPlacePopup.querySelector(".form");
 export const newPlaceButton = document.getElementById("newPlaceButton");
 
 export const profilePopupOpenButton = document.querySelector(
     ".profile__open-button"
 );
 export const galleryCardTemplateSelector = "#galleryCard";
-
 export const cardsWrap = document.querySelector(".gallery__container");
 
-export const allForms = document.querySelectorAll("form");
+//export const allForms = document.querySelectorAll(".form");
+
+export const nameInput = document.getElementById("name");
+export const jobInput = document.getElementById("job");

@@ -14,7 +14,10 @@ import {
     profilePopupOpenButton,
     galleryCardTemplateSelector,
     cardsWrap,
-    allForms,
+    nameInput,
+    jobInput,
+    profilePopupForm,
+    newPlaceForm,
 } from "../utils/constants.js";
 
 const createCard = (cardData) => {
@@ -43,6 +46,7 @@ const handleNewPlaceFormSubmit = (data) => {
         cardsWrap
     );
     newPlacePopup.close();
+    newPlaceFormValidator.resetValidation();
 };
 
 const handleProfileFormSubmit = (data) => {
@@ -66,8 +70,21 @@ bigPicturePopup.setEventListeners();
 newPlacePopup.setEventListeners();
 profilePopup.setEventListeners();
 
+function infoForm(info) {
+    nameInput.value = info.name;
+    jobInput.value = info.job;
+}
+
 newPlaceButton.addEventListener("click", () => newPlacePopup.open());
-profilePopupOpenButton.addEventListener("click", () => profilePopup.open());
+//profilePopupOpenButton.addEventListener("click", () => profilePopup.open())
+
+profilePopupOpenButton.addEventListener("click", () => {
+    const formInputs = userInfo.getUserInfo();
+
+    infoForm(formInputs);
+
+    profilePopup.open();
+});
 
 const renderCard = (cardData) => {
     const card = createCard(cardData);
@@ -84,6 +101,15 @@ const section = new Section({
 
 section.renderItems();
 
-allForms.forEach((form) => {
-    new FormValidator(configurations, form).enableValidation();
-});
+// allForms.forEach((form) => {
+//     new FormValidator(configurations, form).enableValidation();
+// });
+
+const profileFormValidator = new FormValidator(
+    configurations,
+    profilePopupForm
+);
+const newPlaceFormValidator = new FormValidator(configurations, newPlaceForm);
+
+profileFormValidator.enableValidation();
+newPlaceFormValidator.enableValidation();
