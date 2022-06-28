@@ -46,7 +46,6 @@ const handleNewPlaceFormSubmit = (data) => {
         cardsWrap
     );
     newPlacePopup.close();
-    newPlaceFormValidator.resetValidation();
 };
 
 const handleProfileFormSubmit = (data) => {
@@ -70,18 +69,20 @@ bigPicturePopup.setEventListeners();
 newPlacePopup.setEventListeners();
 profilePopup.setEventListeners();
 
-function infoForm(info) {
+function fillProfileInputs(info) {
     nameInput.value = info.name;
     jobInput.value = info.job;
 }
 
-newPlaceButton.addEventListener("click", () => newPlacePopup.open());
-//profilePopupOpenButton.addEventListener("click", () => profilePopup.open())
+newPlaceButton.addEventListener("click", () => {
+    newPlaceFormValidator.resetValidation();
+    newPlacePopup.open();
+});
 
 profilePopupOpenButton.addEventListener("click", () => {
     const formInputs = userInfo.getUserInfo();
 
-    infoForm(formInputs);
+    fillProfileInputs(formInputs);
 
     profilePopup.open();
 });
@@ -100,10 +101,6 @@ const section = new Section({
 );
 
 section.renderItems();
-
-// allForms.forEach((form) => {
-//     new FormValidator(configurations, form).enableValidation();
-// });
 
 const profileFormValidator = new FormValidator(
     configurations,
