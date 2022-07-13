@@ -10,7 +10,7 @@
     display: flex;
 }
 
-.profile__image_container {
+.profile__image-container {
     position: relative;
     max-width: 120px;
 }
