@@ -5,7 +5,11 @@ export default class UserInfo {
         this._profileName = this._profile.querySelector(userData.userNameSelector);
         this._profileJob = this._profile.querySelector(userData.userJobSelector);
         this._profileAvatar = document.querySelector(userData.userAvatarSelector);
-        this._profileId = ""
+        this._profileId = "";
+    }
+
+    getId() {
+        return this._profileId;
     }
 
     getUserInfo() {
@@ -13,14 +17,14 @@ export default class UserInfo {
             name: this._profileName.textContent,
             job: this._profileJob.textContent,
             avatar: this._profileAvatar.src,
-            _id: this._profileId
+            _id: this._profileId,
         };
     }
 
     setUserInfo(userName, userJob, userId) {
         this._profileName.textContent = userName;
         this._profileJob.textContent = userJob;
-        this._profileId = userId
+        this._profileId = userId;
     }
 
     setUserAvatar(userAvatar) {

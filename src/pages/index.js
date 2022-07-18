@@ -1,9 +1,9 @@
 import "./index.css";
 import { Card } from "../components/Card.js";
 
-import Api from "../components/api";
+import Api from "../components/Api";
 import Section from "../components/Section.js";
-import PopupWithConfirmation from "../components/popupWithConfirmation";
+import PopupWithConfirmation from "../components/PopupWithConfirmation";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import { FormValidator } from "../components/FormValidator";
@@ -13,7 +13,6 @@ import {
     newPlaceButton,
     profilePopupOpenButton,
     galleryCardTemplateSelector,
-    cardsWrap,
     nameInput,
     jobInput,
     profilePopupForm,
@@ -23,8 +22,8 @@ import {
 } from "../utils/constants.js";
 
 const createCard = (cardData) => {
-    cardData.userId = userInfo.getUserInfo()["_id"];
-    const _card = new Card(
+    cardData.userId = userInfo.getId();
+    const card = new Card(
         cardData,
         galleryCardTemplateSelector,
         (link, name) => {
@@ -36,9 +35,9 @@ const createCard = (cardData) => {
             deleteCardPopup.setAction(() => {
                 deleteCardPopup.renderLoading(true);
                 api
-                    .deleteCard(_card._id)
+                    .deleteCard(card._id)
                     .then(() => {
-                        _card.removeCard();
+                        card._deleteGalleryCard(e);
                         deleteCardPopup.close();
                     })
                     .catch((err) => {
@@ -50,13 +49,17 @@ const createCard = (cardData) => {
             });
         },
         (id) => {
-            const alreadyLiked = _card.isLiked(userInfo.getUserInfo()["_id"]);
+            const alreadyLiked = card.isLiked(userInfo.getId());
 
             if (alreadyLiked) {
                 api
                     .removeLikeCard(id)
                     .then((res) => {
-                        _card.updateLikes(res.likes);
+                        card.updateLikes(
+                            res.likes,
+                            card._cardLikeButton,
+                            card._cardLikesCounter
+                        );
                     })
                     .catch((err) => {
                         console.log(err);
@@ -65,7 +68,11 @@ const createCard = (cardData) => {
                 api
                     .addLikeCard(id)
                     .then((res) => {
-                        _card.updateLikes(res.likes);
+                        card.updateLikes(
+                            res.likes,
+                            card._cardLikeButton,
+                            card._cardLikesCounter
+                        );
                     })
                     .catch((err) => {
                         console.log(err);
@@ -73,7 +80,7 @@ const createCard = (cardData) => {
             }
         }
     );
-    return _card;
+    return card;
 };
 
 const renderCard = (cardData) => {
@@ -106,15 +113,13 @@ const handleNewPlaceFormSubmit = (data) => {
         })
         .then((res) => {
             renderCard({
-                    name: res["name"],
-                    link: res["link"],
-                    _id: res["_id"],
-                    owner: res["owner"],
-                    userId: userInfo.getUserInfo()["_id"],
-                },
-                cardsWrap,
-                newPlacePopup.close()
-            );
+                name: res["name"],
+                link: res["link"],
+                _id: res["_id"],
+                owner: res["owner"],
+                userId: userInfo.getUserInfo()["_id"],
+            });
+            newPlacePopup.close();
         })
         .catch((err) => {
             console.log(err);
@@ -232,10 +237,10 @@ Promise.all([api.getUserInfo(), api.getCards()])
         const userId = userData._id;
         // User
         const { avatar, name, about } = userData;
-        const _newAvatar = { avatarLink: avatar };
-        console.log(userData);
+        const newAvatarData = { avatarLink: avatar };
+
         userInfo.setUserInfo(name, about, userId);
-        userInfo.setUserAvatar(_newAvatar);
+        userInfo.setUserAvatar(newAvatarData);
 
         section.addNewItems(cardsData);
     })
