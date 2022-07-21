@@ -37,7 +37,7 @@ const createCard = (cardData) => {
                 api
                     .deleteCard(card._id)
                     .then(() => {
-                        card._deleteGalleryCard(e);
+                        card.removeCard(e);
                         deleteCardPopup.close();
                     })
                     .catch((err) => {
@@ -49,16 +49,14 @@ const createCard = (cardData) => {
             });
         },
         (id) => {
-            const alreadyLiked = card.isLiked(userInfo.getId());
+            const alreadyLiked = card.isLiked();
 
             if (alreadyLiked) {
                 api
                     .removeLikeCard(id)
                     .then((res) => {
                         card.updateLikes(
-                            res.likes,
-                            card._cardLikeButton,
-                            card._cardLikesCounter
+                            res.likes
                         );
                     })
                     .catch((err) => {
@@ -69,9 +67,7 @@ const createCard = (cardData) => {
                     .addLikeCard(id)
                     .then((res) => {
                         card.updateLikes(
-                            res.likes,
-                            card._cardLikeButton,
-                            card._cardLikesCounter
+                            res.likes
                         );
                     })
                     .catch((err) => {
@@ -80,6 +76,7 @@ const createCard = (cardData) => {
             }
         }
     );
+
     return card;
 };
 
@@ -134,7 +131,8 @@ const handleProfileFormSubmit = (data) => {
     api
         .addUserInfo(data)
         .then((res) => {
-            userInfo.setUserInfo(res.name, res.about, res._id);
+            console.log(res)
+            userInfo.setUserInfo(res.name, res.about);
             profilePopup.close();
         })
         .catch((err) => {
@@ -239,7 +237,8 @@ Promise.all([api.getUserInfo(), api.getCards()])
         const { avatar, name, about } = userData;
         const newAvatarData = { avatarLink: avatar };
 
-        userInfo.setUserInfo(name, about, userId);
+        userInfo.setUserInfo(name, about);
+        userInfo.setUserId(userId);
         userInfo.setUserAvatar(newAvatarData);
 
         section.addNewItems(cardsData);

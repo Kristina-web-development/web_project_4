@@ -21,10 +21,13 @@ export default class UserInfo {
         };
     }
 
-    setUserInfo(userName, userJob, userId) {
+    setUserId(id) {
+        this._profileId = id;
+    }
+
+    setUserInfo(userName, userJob) {
         this._profileName.textContent = userName;
         this._profileJob.textContent = userJob;
-        this._profileId = userId;
     }
 
     setUserAvatar(userAvatar) {
