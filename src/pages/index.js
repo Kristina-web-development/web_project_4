@@ -29,7 +29,7 @@ const createCard = (cardData) => {
         (link, name) => {
             bigPicturePopup.open(link, name);
         },
-        (e) => {
+        () => {
             deleteCardPopup.open();
 
             deleteCardPopup.setAction(() => {
@@ -37,7 +37,7 @@ const createCard = (cardData) => {
                 api
                     .deleteCard(card._id)
                     .then(() => {
-                        card.removeCard(e);
+                        card.removeCard();
                         deleteCardPopup.close();
                     })
                     .catch((err) => {

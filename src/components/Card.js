@@ -20,11 +20,10 @@ class Card {
     }
 
     _renderLikes() {
+        this._cardLikesCounter.textContent = this._cardLikes.length;
         if (this.isLiked()) {
-            this._cardLikesCounter.textContent = this._cardLikes.length;
             this._cardLikeButton.classList.add("gallery__card-button_active");
         } else {
-            this._cardLikesCounter.textContent = this._cardLikes.length;
             this._cardLikeButton.classList.remove("gallery__card-button_active");
         }
     }
@@ -63,15 +62,14 @@ class Card {
     _getTemplate() {
         const cardElement = document
             .querySelector(this._cardSelector)
-            .content.cloneNode(true);
-
+            .content.cloneNode(true)
+            .querySelector(".gallery__card");
         return cardElement;
     }
 
     removeCard = () => {
-        // I'm really sorry but i don't know why this._cardElement doesn't work for me.
-        // Everytime i try to delete card, it refers to card template element, but not to card itself
-        document.getElementById(this._id).closest(".gallery__card").remove();
+        this._cardElement.remove();
+        this._cardElement = null;
     };
 
     generateCard() {
